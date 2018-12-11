@@ -4,7 +4,6 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +46,11 @@ public class EmpresaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Empresa> criar(@Valid @RequestBody Empresa empresa, HttpServletResponse response) {
+	public ResponseEntity<Empresa> criar(@Valid @RequestBody Empresa empresa) {
 		Empresa empresaPersistida = empresaService.adicionar(empresa);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
 				.buildAndExpand(empresaPersistida.getId()).toUri();
-			response.setHeader("Location", uri.toASCIIString());
 
 		return ResponseEntity.created(uri).body(empresaPersistida);
 	}
